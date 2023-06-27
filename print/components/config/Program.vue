@@ -9,6 +9,7 @@
       :camp="camp"
       :show-daily-summary="options.dayOverview || false"
       :show-activities="true"
+      :categories="categories"
       :index="index"
     />
   </div>
@@ -26,6 +27,7 @@ export default {
   data() {
     return {
       periods: [],
+      categories: this.options.categories,
     }
   },
   async fetch() {

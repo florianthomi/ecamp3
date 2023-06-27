@@ -10,6 +10,7 @@
         v-else
         :key="period._meta.self"
         :period="period"
+        :categories="categories"
         :index="index"
       />
     </ul>
@@ -27,6 +28,7 @@ export default {
   data() {
     return {
       periods: [],
+      categories: this.options.categories,
     }
   },
   async fetch() {

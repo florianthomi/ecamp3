@@ -210,6 +210,7 @@
           "periods": "Sezione/i portante/i"
         },
         "programConfig": {
+          "categories": "Categorie di attività",
           "dayOverview": "Panoramica della giornata di stampa",
           "periods": "Sezione/i portante/i"
         },

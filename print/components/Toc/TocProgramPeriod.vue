@@ -10,6 +10,7 @@
         :key="day.id"
         :day="day"
         :index="index"
+        :categories="categories"
       />
     </ul>
   </li>
@@ -21,6 +22,7 @@ export default {
   props: {
     index: { type: Number, required: true },
     period: { type: Object, required: true },
+    categories: { type: Array, required: true },
   },
   data() {
     return {

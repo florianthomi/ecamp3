@@ -8,7 +8,11 @@ function Program(props) {
   const periods = props.entry.options.periods.map((periodUri) =>
     props.store.get(periodUri)
   )
-  if (!periods.some((period) => period.scheduleEntries().items.length > 0)) {
+  const categories = props.entry.options.categories
+  if (
+    !periods.some((period) => period.scheduleEntries().items.length > 0) ||
+    categories.length === 0
+  ) {
     return <React.Fragment />
   }
   return periods.map((period) => {
@@ -20,24 +24,28 @@ function Program(props) {
     const scheduleEntryEntries = sortBy(period.scheduleEntries().items, [
       'dayNumber',
       'scheduleEntryNumber',
-    ]).map((scheduleEntry) => {
-      const activity = scheduleEntry.activity()
-      return (
-        <Link
-          style={tocStyles.subEntry}
-          href={`#${props.id}-${period.id}-${scheduleEntry.id}`}
-          key={scheduleEntry.id}
-        >
-          <Text>
-            {activity.category().short +
-              ' ' +
-              scheduleEntry.number +
-              ' ' +
-              activity.title}
-          </Text>
-        </Link>
+    ])
+      .filter((scheduleEntry) =>
+        categories.includes(scheduleEntry.activity().category()._meta.self)
       )
-    })
+      .map((scheduleEntry) => {
+        const activity = scheduleEntry.activity()
+        return (
+          <Link
+            style={tocStyles.subEntry}
+            href={`#${props.id}-${period.id}-${scheduleEntry.id}`}
+            key={scheduleEntry.id}
+          >
+            <Text>
+              {activity.category().short +
+                ' ' +
+                scheduleEntry.number +
+                ' ' +
+                activity.title}
+            </Text>
+          </Link>
+        )
+      })
     return [periodEntry, ...scheduleEntryEntries]
   })
 }

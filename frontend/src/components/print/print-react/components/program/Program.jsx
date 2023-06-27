@@ -9,7 +9,11 @@ function Program(props) {
   const periods = props.content.options.periods.map((periodUri) =>
     props.store.get(periodUri)
   )
-  if (!periods.some((period) => period.scheduleEntries().items.length > 0)) {
+  const categories = props.content.options.categories
+  if (
+    !periods.some((period) => period.scheduleEntries().items.length > 0) ||
+    categories.length === 0
+  ) {
     return null
   }
   return (
@@ -24,17 +28,18 @@ function Program(props) {
               id={`${props.id}-${period.id}`}
               bookmark={{ title: period.description, fit: true }}
             />
-            {sortBy(period.scheduleEntries().items, [
-              'dayNumber',
-              'scheduleEntryNumber',
-            ]).map((scheduleEntry) => (
-              <ScheduleEntry
-                {...props}
-                scheduleEntry={scheduleEntry}
-                key={scheduleEntry.id}
-                id={`${props.id}-${period.id}-${scheduleEntry.id}`}
-              />
-            ))}
+            {sortBy(period.scheduleEntries().items, ['dayNumber', 'scheduleEntryNumber'])
+              .filter((scheduleEntry) =>
+                categories.includes(scheduleEntry.activity().category()._meta.self)
+              )
+              .map((scheduleEntry) => (
+                <ScheduleEntry
+                  {...props}
+                  scheduleEntry={scheduleEntry}
+                  key={scheduleEntry.id}
+                  id={`${props.id}-${period.id}-${scheduleEntry.id}`}
+                />
+              ))}
           </View>
         )
       })}

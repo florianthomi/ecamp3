@@ -14,6 +14,7 @@
       :day="day"
       :show-daily-summary="showDailySummary"
       :show-activities="showActivities"
+      :categories="categories"
       :index="index"
     />
   </div>
@@ -23,6 +24,7 @@
 export default {
   props: {
     period: { type: Object, required: true },
+    categories: { type: Array, required: true },
     showDailySummary: { type: Boolean, required: true },
     showActivities: { type: Boolean, required: true },
     index: { type: Number, required: true },

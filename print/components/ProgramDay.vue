@@ -22,6 +22,7 @@ export default {
   mixins: [dateHelperUTCFormatted],
   props: {
     day: { type: Object, required: true },
+    categories: { type: Array, required: true },
     showDailySummary: { type: Boolean, required: true },
     showActivities: { type: Boolean, required: true },
     index: { type: Number, required: true },
@@ -33,7 +34,10 @@ export default {
         .period()
         .scheduleEntries()
         .items.filter((scheduleEntry) => {
-          return scheduleEntry.day()._meta.self === this.day._meta.self
+          return (
+            scheduleEntry.day()._meta.self === this.day._meta.self &&
+            this.categories.includes(scheduleEntry.activity().category()._meta.self)
+          )
         })
     },
   },

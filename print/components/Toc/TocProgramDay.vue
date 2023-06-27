@@ -22,6 +22,7 @@ export default {
   props: {
     index: { type: Number, required: true },
     day: { type: Object, required: true },
+    categories: { type: Array, required: true },
   },
   computed: {
     // returns scheduleEntries of current day without the need for an additional API call
@@ -30,7 +31,10 @@ export default {
         .period()
         .scheduleEntries()
         .items.filter((scheduleEntry) => {
-          return scheduleEntry.day()._meta.self === this.day._meta.self
+          return (
+            scheduleEntry.day()._meta.self === this.day._meta.self &&
+            this.categories.includes(scheduleEntry.activity().category()._meta.self)
+          )
         })
     },
   },

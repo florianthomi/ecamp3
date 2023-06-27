@@ -170,6 +170,12 @@ export default {
     this.camp()
       .periods()
       .items.forEach((period) => period.days().$reload())
+    this.camp()
+      .categories()
+      .$loadItems()
+      .then(() => {
+        this.cnf.contents = this.defaultContents()
+      })
   },
   methods: {
     defaultContents() {
@@ -202,6 +208,9 @@ export default {
             type: 'Program',
             options: {
               periods: [period._meta.self],
+              categories: this.camp()
+                .categories()
+                .items.map((c) => c._meta.self),
             },
           })
         })
